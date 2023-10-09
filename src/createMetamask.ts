@@ -1,9 +1,16 @@
 import {Page} from "puppeteer";
 
 export default async function (page: Page) {
+    page.setDefaultTimeout(15000);
     await page.waitForSelector('#onboarding__terms-checkbox', {visible: true});
-    await new Promise(r => setTimeout(r, 1000));
-    await page.click('#onboarding__terms-checkbox');
+    let isChecked = false;
+    while (!isChecked) {
+        await page.click('#onboarding__terms-checkbox');
+        isChecked = await page.$eval('#onboarding__terms-checkbox', (element: Element) => {
+            return element.classList.contains('check-box__checked');
+        });
+        if (isChecked) break;
+    }
     await page.click('[data-testid="onboarding-create-wallet"]');
     await page.waitForSelector('[data-testid="metametrics-i-agree"]');
     await page.click('[data-testid="metametrics-i-agree"]');

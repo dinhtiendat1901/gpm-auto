@@ -1,6 +1,7 @@
 import {Browser, Page} from "puppeteer";
 
 export default async function (page: Page, browser: Browser) {
+    page.setDefaultTimeout(15000);
     await page.goto('https://www.alphabot.app/');
     await page.waitForSelector('[data-action="header-sign-in"]');
     await page.click('[data-action="header-sign-in"]');

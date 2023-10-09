@@ -1,20 +1,34 @@
-import axios, {AxiosResponse} from "axios";
-
+import * as XLSX from 'xlsx';
 
 const apiUrl = 'http://127.0.0.1:19995';
 
-interface Profile {
-    id: string,
-    name: string,
-    path: string,
-    created_at: string
+
+export default function getListProfileIds(): string[] {
+    const filePath = './profileid.xlsx';
+    return readExcelFile(filePath);
+
 }
 
-export default async function getListProfileIds(): Promise<string[]> {
-    const listProfiles = await axios.get<any, AxiosResponse<Profile[]>, any>(`${apiUrl}/v2/profiles`);
-    const listProfileIds: string[] = [];
-    listProfiles.data.forEach(value => {
-        listProfileIds.push(value.id);
-    })
-    return listProfileIds;
-}
+
+const readExcelFile = (filePath: string): string[] => {
+    const workbook = XLSX.readFile(filePath);
+    const sheetName = workbook.SheetNames[0]; // Assuming you want the first sheet
+    const worksheet = workbook.Sheets[sheetName];
+
+    const firstColumnData: string[] = [];
+    let rowNum = 1; // Start at 1 to skip the header row
+
+    while (true) {
+        const cellAddress = `A${rowNum}`; // "A" refers to the first column
+        const cell = worksheet[cellAddress];
+
+        if (!cell) {
+            break; // Stop when you hit a null cell
+        }
+
+        firstColumnData.push(cell.v as string); // Assuming the cell contains text
+        rowNum++;
+    }
+
+    return firstColumnData;
+};

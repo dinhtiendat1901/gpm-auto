@@ -6,6 +6,7 @@ import startProfile from "./startProfile";
 import installMetamask from "./installMetamask";
 import getListProfileIds from "./getListProfileIds";
 import stopProfile from "./stopProfile";
+import {currentProfileId, changeCurrentProfileId} from './globalVariable';
 
 
 async function main() {
@@ -16,10 +17,10 @@ async function main() {
     const queueEvents = new QueueEvents('idsQueue', {
         connection,
     });
-    new Worker('idsQueue', async (job) => {
-        const browser = await startProfile(job.data.profileId);
+    new Worker('idsQueue', async () => {
+        const browser = await startProfile(currentProfileId);
         const firstPage = await browser.pages().then(allPages => allPages[0]);
-        await installMetamask(firstPage);
+        await installMetamask(firstPage, browser);
         await browser.waitForTarget(
             target => target.url() === 'chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/home.html#onboarding/welcome' || target.url() === 'chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/home.html', {
                 timeout: 600000
@@ -28,20 +29,22 @@ async function main() {
         const metamaskPage = await browser.newPage();
         await metamaskPage.goto('chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/home.html#onboarding/welcome');
         await createMetamask(metamaskPage);
-        // }
         const alphaBotPage = await browser.newPage();
         await signInAlphabot(alphaBotPage, browser);
-        stopProfile(job.data.profileId);
+        stopProfile(currentProfileId);
     }, {
         connection,
     });
-    const listProfileId = await getListProfileIds();
+    const listProfileId = getListProfileIds();
     let currentIndex = 0;
 
     async function addNextJob() {
         if (currentIndex < listProfileId.length) {
-            const profileId = listProfileId[currentIndex];
-            await queue.add(`job-${profileId}`, {profileId});
+            changeCurrentProfileId(listProfileId[currentIndex]);
+            await queue.add(`job-${currentProfileId}`, null, {
+                removeOnComplete: true,
+                removeOnFail: true
+            });
             currentIndex++;
         }
     }
@@ -49,6 +52,11 @@ async function main() {
     addNextJob().then();
     queueEvents.on('completed', async (event) => {
         console.log(`Job with ID ${event.jobId} has been completed.`);
+        await addNextJob();
+    });
+    queueEvents.on('failed', async (event) => {
+        console.log(`Job with ID ${event.jobId} has been failed.`);
+        stopProfile(currentProfileId);
         await addNextJob();
     });
 }
