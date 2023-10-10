@@ -8,15 +8,14 @@ export default async function (page: Page, browser: Browser) {
     await page.waitForSelector('.css-1c7g2xp');
     await page.click('.css-1c7g2xp');
     const backgroundPageTarget = await browser.waitForTarget(
-        target => target.url() === 'chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/notification.html', {timeout: 30000}
-    );
+        target => target.url() === 'chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/notification.html');
     const backgroundPage = await backgroundPageTarget.page();
+    backgroundPage.setDefaultTimeout(15000);
     await backgroundPage.waitForSelector('[data-testid="page-container-footer-next"]', {visible: true});
     await backgroundPage.click('[data-testid="page-container-footer-next"]');
-    await backgroundPage.waitForSelector('[data-testid="page-container-footer-next"]', {visible: true});
+    await backgroundPage.waitForSelector('.permission-approval-container__content__requested', {visible: true});
     await backgroundPage.click('[data-testid="page-container-footer-next"]');
-    await new Promise(r => setTimeout(r, 1000));
-    await backgroundPage.waitForSelector('[data-testid="page-container-footer-next"]', {visible: true});
+    await backgroundPage.waitForSelector('.request-signature__origin', {visible: true});
     await backgroundPage.click('[data-testid="page-container-footer-next"]');
     await page.waitForSelector('[data-action="header-open-profile"]', {visible: true});
 }

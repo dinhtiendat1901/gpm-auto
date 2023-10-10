@@ -7,7 +7,7 @@ export default async function (page: Page, browser: Browser) {
     await page.evaluate(() => {
         document.documentElement.requestFullscreen();
     });
-    await page.waitForSelector('[aria-label="Add to Chrome"]', {timeout: 10000});
+    await page.waitForSelector('[aria-label="Add to Chrome"]');
 
     await page.click('[aria-label="Add to Chrome"]');
 

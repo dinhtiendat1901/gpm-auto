@@ -14,6 +14,13 @@ async function main() {
     const queue = new Queue('idsQueue', {
         connection,
     });
+    await queue.clean(0, 1000, 'completed');
+    await queue.clean(0, 1000, 'delayed');
+    await queue.clean(0, 1000, 'paused');
+    await queue.clean(0, 1000, 'active');
+    await queue.clean(0, 1000, 'failed');
+    await queue.clean(0, 1000, 'prioritized');
+    await queue.clean(0, 1000, 'wait');
     const queueEvents = new QueueEvents('idsQueue', {
         connection,
     });
