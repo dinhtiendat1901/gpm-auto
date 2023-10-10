@@ -1,13 +1,14 @@
-import {Browser, Page} from "puppeteer";
+import {Page} from "puppeteer";
+import {currentBrowser} from "./globalVariable";
 
-export default async function (page: Page, browser: Browser) {
+export default async function (page: Page) {
     page.setDefaultTimeout(15000);
     await page.goto('https://www.alphabot.app/');
     await page.waitForSelector('[data-action="header-sign-in"]');
     await page.click('[data-action="header-sign-in"]');
     await page.waitForSelector('.css-1c7g2xp');
     await page.click('.css-1c7g2xp');
-    const backgroundPageTarget = await browser.waitForTarget(
+    const backgroundPageTarget = await currentBrowser.waitForTarget(
         target => target.url() === 'chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/notification.html');
     const backgroundPage = await backgroundPageTarget.page();
     backgroundPage.setDefaultTimeout(15000);

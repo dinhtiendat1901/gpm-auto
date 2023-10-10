@@ -7,5 +7,9 @@ function changeCurrentProfileId(profileId: string) {
     currentProfileId = profileId
 }
 
+function changeCurrentBrowser(browser: Browser) {
+    currentBrowser = browser;
+}
 
-export {currentBrowser, currentProfileId, changeCurrentProfileId}
+
+export {currentBrowser, currentProfileId, changeCurrentProfileId, changeCurrentBrowser}
