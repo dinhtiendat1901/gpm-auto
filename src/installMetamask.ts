@@ -1,10 +1,13 @@
 import * as robot from "robotjs";
 import {Page} from "puppeteer";
 import {currentBrowser} from "./globalVariable";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export default async function (page: Page) {
     page.setDefaultTimeout(15000);
-    await page.goto('https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en-GB');
+    await page.goto(`${process.env.WEB_STORE_METAMASK_URL}`);
     await page.evaluate(() => {
         document.documentElement.requestFullscreen();
     });

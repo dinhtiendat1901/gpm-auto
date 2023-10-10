@@ -1,6 +1,8 @@
 import axios from "axios";
+import dotenv from "dotenv";
 
-const apiUrl = 'http://127.0.0.1:19995';
+dotenv.config();
+
 export default function (idProfile: string) {
-    axios.get(`${apiUrl}/v2/stop?profile_id=${idProfile}`).then();
+    axios.get(`${process.env.STOP_PROFILE_API_URL}${idProfile}`).then();
 }
