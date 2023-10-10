@@ -4,8 +4,11 @@ import installMetamask from "../installMetamask";
 import createMetamask from "../createMetamask";
 import signInAlphabot from "../signInAlphabot";
 import stopProfile from "../until/stopProfile";
+import {Job} from "bullmq";
+import {changeCurrentProfileId} from "../globalVariable";
 
-export default async function () {
+export default async function (job: Job) {
+    changeCurrentProfileId(job.data.profileId);
     const browser = await startProfile(currentProfileId);
     changeCurrentBrowser(browser);
     const firstPage = await browser.pages().then(allPages => allPages[0]);

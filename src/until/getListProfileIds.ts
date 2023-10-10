@@ -1,8 +1,5 @@
 import * as XLSX from 'xlsx';
 
-const apiUrl = 'http://127.0.0.1:19995';
-
-
 export default function getListProfileIds(): string[] {
     const filePath = './profileid.xlsx';
     return readExcelFile(filePath);

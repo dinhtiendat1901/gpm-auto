@@ -1,44 +1,45 @@
-import {Worker, Queue, QueueEvents} from 'bullmq';
-import IORedis from 'ioredis';
+import {BulkJobOptions, Worker} from 'bullmq';
 import getListProfileIds from "./until/getListProfileIds";
 import stopProfile from "./until/stopProfile";
-import {currentProfileId, changeCurrentProfileId} from './globalVariable';
+import {currentProfileId} from './globalVariable';
 import createMetamaskJob from "./job/createMetamaskJob";
 import setupRedis from "./until/setupRedis";
 
+interface JobIns {
+    name: string,
+    data: any,
+    opts: BulkJobOptions
+}
 
 async function main() {
 
     const redisConfig = await setupRedis();
 
-    new Worker(redisConfig.queueName, async () => {
-        await createMetamaskJob();
+    new Worker(redisConfig.queueName, async (job) => {
+        await createMetamaskJob(job);
     }, {
         connection: redisConfig.connection
     });
     const listProfileId = getListProfileIds();
-    let currentIndex = 0;
+    let listJob: JobIns[] = [];
 
-    async function addNextJob() {
-        if (currentIndex < listProfileId.length) {
-            changeCurrentProfileId(listProfileId[currentIndex]);
-            await redisConfig.queue.add(`job-${currentProfileId}`, null, {
-                removeOnComplete: true,
-                removeOnFail: true
-            });
-            currentIndex++;
-        }
-    }
+    listProfileId.forEach((profileId: string) => {
+        listJob.push({
+            name: `job-${profileId}`,
+            data: {
+                profileId: profileId
+            },
+            opts: {
+                removeOnFail: true,
+                removeOnComplete: true
+            }
+        })
 
-    addNextJob().then();
-    redisConfig.queueEvents.on('completed', async (event) => {
-        console.log(`Job with ID ${event.jobId} has been completed.`);
-        await addNextJob();
     });
+    await redisConfig.queue.addBulk(listJob);
     redisConfig.queueEvents.on('failed', async (event) => {
         console.log(`Job with ID ${event.jobId} has been failed.`);
         stopProfile(currentProfileId);
-        await addNextJob();
     });
 }
 
