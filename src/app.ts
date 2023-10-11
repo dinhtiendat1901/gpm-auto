@@ -4,6 +4,7 @@ import stopProfile from "./until/stopProfile";
 import {currentProfileId} from './globalVariable';
 import createMetamaskJob from "./job/createMetamaskJob";
 import setupRedis from "./until/setupRedis";
+import {deleteFirstRow, cutAndInsertRow} from "./until/excelUntil";
 
 interface JobIns {
     name: string,
@@ -20,7 +21,7 @@ async function main() {
     }, {
         connection: redisConfig.connection
     });
-    const listProfileId = getListProfileIds();
+    const listProfileId = await getListProfileIds();
     let listJob: JobIns[] = [];
 
     listProfileId.forEach((profileId: string) => {
@@ -40,6 +41,11 @@ async function main() {
     redisConfig.queueEvents.on('failed', async (event) => {
         console.log(`Job with ID ${event.jobId} has been failed.`);
         stopProfile(currentProfileId);
+        await cutAndInsertRow();
+    });
+    redisConfig.queueEvents.on('completed', async (event) => {
+        console.log(`Job with ID ${event.jobId} has been completed.`);
+        await deleteFirstRow();
     });
 }
 
