@@ -7,7 +7,7 @@ dotenv.config();
 
 export default async function (page: Page) {
     page.setDefaultTimeout(15000);
-    await page.goto(`${process.env.WEB_STORE_METAMASK_URL}`);
+    await page.goto(process.env.WEB_STORE_METAMASK_URL);
     await page.evaluate(() => {
         document.documentElement.requestFullscreen();
     });
@@ -17,7 +17,7 @@ export default async function (page: Page) {
 
     while ((await currentBrowser.pages()).length < 2) {
         await new Promise(r => setTimeout(r, 1000));
-        robot.moveMouse(1300, 200);
+        robot.moveMouse(parseInt(process.env.COORDINATES_X), parseInt(process.env.COORDINATES_Y));
         robot.mouseClick();
     }
 }

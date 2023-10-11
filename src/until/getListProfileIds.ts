@@ -1,9 +1,10 @@
 import * as XLSX from 'xlsx';
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export default function getListProfileIds(): string[] {
-    const filePath = './profileid.xlsx';
-    return readExcelFile(filePath);
-
+    return readExcelFile(process.env.EXCEL_FILE);
 }
 
 

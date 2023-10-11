@@ -14,9 +14,9 @@ export default async function (job: Job) {
     const firstPage = await browser.pages().then(allPages => allPages[0]);
     await installMetamask(firstPage);
     await browser.waitForTarget(
-        target => target.url() === `${process.env.METAMASK_WELCOME_URL}` || target.url() === `${process.env.METAMASK_HOME_URL}`);
+        target => target.url() === process.env.METAMASK_WELCOME_URL || target.url() === process.env.METAMASK_HOME_URL);
     const metamaskPage = await browser.newPage();
-    await metamaskPage.goto(`${process.env.METAMASK_WELCOME_URL}`);
+    await metamaskPage.goto(process.env.METAMASK_WELCOME_URL);
     await createMetamask(metamaskPage);
     const alphaBotPage = await browser.newPage();
     await signInAlphabot(alphaBotPage);
