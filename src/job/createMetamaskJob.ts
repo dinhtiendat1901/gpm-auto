@@ -2,7 +2,6 @@ import startProfile from "../until/startProfile";
 import {changeCurrentBrowser, currentProfileId} from "../globalVariable";
 import installMetamask from "../installMetamask";
 import createMetamask from "../createMetamask";
-import signInAlphabot from "../signInAlphabot";
 import stopProfile from "../until/stopProfile";
 import {Job} from "bullmq";
 import {changeCurrentProfileId} from "../globalVariable";
@@ -18,7 +17,5 @@ export default async function (job: Job) {
     const metamaskPage = await browser.newPage();
     await metamaskPage.goto(process.env.METAMASK_WELCOME_URL);
     await createMetamask(metamaskPage);
-    const alphaBotPage = await browser.newPage();
-    await signInAlphabot(alphaBotPage);
     stopProfile(currentProfileId);
 }

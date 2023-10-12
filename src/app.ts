@@ -1,10 +1,10 @@
 import {BulkJobOptions, Worker} from 'bullmq';
 import getListProfileIds from "./until/getListProfileIds";
-import stopProfile from "./until/stopProfile";
-import {currentProfileId} from './globalVariable';
-import createMetamaskJob from "./job/createMetamaskJob";
 import setupRedis from "./until/setupRedis";
 import {deleteFirstRow, cutAndInsertRow} from "./until/excelUntil";
+import signInAlphabotJob from "./job/signInAlphabotJob";
+import stopProfile from "./until/stopProfile";
+import {currentProfileId} from "./globalVariable";
 
 interface JobIns {
     name: string,
@@ -17,7 +17,8 @@ async function main() {
     const redisConfig = await setupRedis();
 
     new Worker(redisConfig.queueName, async (job) => {
-        await createMetamaskJob(job);
+        // await createMetamaskJob(job);
+        await signInAlphabotJob(job);
     }, {
         connection: redisConfig.connection
     });

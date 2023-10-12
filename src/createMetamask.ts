@@ -30,4 +30,5 @@ export default async function (page: Page) {
     await page.click('[data-testid="pin-extension-next"]');
     await page.waitForSelector('[data-testid="pin-extension-done"]');
     await page.click('[data-testid="pin-extension-done"]');
+    await new Promise(r => setTimeout(r, 3000));
 }
