@@ -1,10 +1,12 @@
 import {BulkJobOptions, Worker} from 'bullmq';
 import getListProfileIds from "./until/getListProfileIds";
 import setupRedis from "./until/setupRedis";
-import {deleteFirstRow, cutAndInsertRow} from "./until/excelUntil";
+import {deleteFirstRow, cutAndInsertRow, readData, writeArrayToColumn, clearSecondWorksheet} from "./until/excelUntil";
 import signInAlphabotJob from "./job/signInAlphabotJob";
 import stopProfile from "./until/stopProfile";
 import {currentProfileId} from "./globalVariable";
+import getUserInput from "./until/getUserInput";
+import createMetamaskJob from "./job/createMetamaskJob";
 
 interface JobIns {
     name: string,
@@ -13,16 +15,30 @@ interface JobIns {
 }
 
 async function main() {
+    const userInput = await getUserInput();
 
     const redisConfig = await setupRedis();
 
     new Worker(redisConfig.queueName, async (job) => {
-        // await createMetamaskJob(job);
-        await signInAlphabotJob(job);
+        switch (userInput.runScript) {
+            case 1:
+                await createMetamaskJob(job);
+                break;
+            case 2:
+                await signInAlphabotJob(job);
+                break;
+        }
     }, {
         connection: redisConfig.connection
     });
-    const listProfileId = await getListProfileIds();
+    let listProfileId;
+    if (userInput.runType === 1) {
+        listProfileId = await readData();
+    } else {
+        listProfileId = await getListProfileIds(userInput.runFrom, userInput.runTo);
+        await writeArrayToColumn(listProfileId);
+    }
+    await clearSecondWorksheet();
     let listJob: JobIns[] = [];
 
     listProfileId.forEach((profileId: string) => {

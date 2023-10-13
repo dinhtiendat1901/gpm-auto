@@ -36,5 +36,56 @@ async function cutAndInsertRow(): Promise<void> {
     await workbook.xlsx.writeFile(process.env.EXCEL_FILE);
 }
 
+async function readData(): Promise<string[]> {
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.readFile(process.env.EXCEL_FILE);
+    const worksheet = workbook.worksheets[0];
+    const firstColumnData: string[] = [];
+    worksheet.eachRow({includeEmpty: false}, (row) => {
+        const cellValue = row.getCell(1).value;
+        if (cellValue !== null && typeof cellValue !== 'undefined') {
+            firstColumnData.push(String(cellValue));
+        }
+    });
+    return firstColumnData;
+}
 
-export {deleteFirstRow, cutAndInsertRow}
+
+const writeArrayToColumn = async (data: string[]): Promise<void> => {
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.readFile(process.env.EXCEL_FILE);
+
+    const worksheet = workbook.worksheets[0];
+
+    // Write the array of strings to the first column
+    for (let i = 0; i < data.length; i++) {
+        const rowIndex = i + 1;  // Row indices in Excel are 1-based
+        const cell = worksheet.getCell(`A${rowIndex}`);
+        cell.value = data[i];
+    }
+
+    await workbook.xlsx.writeFile(process.env.EXCEL_FILE);
+};
+
+const clearSecondWorksheet = async (): Promise<void> => {
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.readFile(process.env.EXCEL_FILE);
+
+    // Check if a second worksheet exists
+    if (workbook.worksheets.length > 1) {
+        const secondWorksheet = workbook.worksheets[1];
+
+        // Remove the second worksheet
+        workbook.removeWorksheet(secondWorksheet.id);
+
+        // Add it back
+        workbook.addWorksheet('Sheet2');
+
+        await workbook.xlsx.writeFile(process.env.EXCEL_FILE);
+    } else {
+        console.log('The second worksheet does not exist.');
+    }
+};
+
+
+export {deleteFirstRow, cutAndInsertRow, readData, writeArrayToColumn, clearSecondWorksheet}
