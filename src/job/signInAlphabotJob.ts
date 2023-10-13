@@ -28,7 +28,7 @@ export default async function (job: Job) {
 
 
     const backgroundPageTarget1 = await browser.waitForTarget(
-        target => target.url().includes('chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/notification.html#confirm-transaction/'));
+        target => target.url().includes('chrome-extension://nkbihfbeogaeaoehlefnkodbefgpgknn/notification.html#confirm-transaction/') || target.url() === process.env.METAMASK_NOTIFICATION_URL);
 
     const lastPage = await backgroundPageTarget1.page();
     await lastPage.waitForSelector('.request-signature__origin', {visible: true});
