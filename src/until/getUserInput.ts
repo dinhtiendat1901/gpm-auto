@@ -39,7 +39,8 @@ export default async function (): Promise<userInput> {
     }
     console.log('Chọn kịch bản:\n' +
         '1.Tạo ví metamask\n' +
-        '2.Link alphabot')
+        '2.Link alphabot\n' +
+        '3.Fix metamask');
     const runScript = await question('Chọn:');
     return {
         runType: parseInt(runType),

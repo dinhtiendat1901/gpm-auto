@@ -7,6 +7,7 @@ import stopProfile from "./until/stopProfile";
 import {currentProfileId} from "./globalVariable";
 import getUserInput from "./until/getUserInput";
 import createMetamaskJob from "./job/createMetamaskJob";
+import fixMetamaskJob from "./job/fixMetamaskJob";
 
 interface JobIns {
     name: string,
@@ -26,6 +27,9 @@ async function main() {
                 break;
             case 2:
                 await signInAlphabotJob(job);
+                break;
+            case 3:
+                await fixMetamaskJob(job);
                 break;
         }
     }, {
