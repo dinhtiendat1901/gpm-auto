@@ -9,6 +9,7 @@ import getUserInput from "./until/getUserInput";
 import createMetamaskJob from "./job/createMetamaskJob";
 import fixMetamaskJob from "./job/fixMetamaskJob";
 import signInSuperful from "./job/signInSuperful";
+import twDisWithSuperfulJob from "./job/twDisWithSuperfulJob";
 
 interface JobIns {
     name: string,
@@ -34,6 +35,9 @@ async function main() {
                 break;
             case 4:
                 await signInSuperful(job);
+                break;
+            case 5:
+                await twDisWithSuperfulJob(job);
                 break;
         }
     }, {
