@@ -15,8 +15,8 @@ export default async function (page: Page) {
     await page.waitForSelector('[data-testid="metametrics-i-agree"]');
     await page.click('[data-testid="metametrics-i-agree"]');
     await page.waitForSelector('[data-testid="create-password-new"]');
-    await page.type('[data-testid="create-password-new"]', 'Jav13579');
-    await page.type('[data-testid="create-password-confirm"]', 'Jav13579');
+    await page.type('[data-testid="create-password-new"]', process.env.METAMASK_PASSWORD);
+    await page.type('[data-testid="create-password-confirm"]', process.env.METAMASK_PASSWORD);
     await page.click('[data-testid="create-password-terms"]');
     await page.click('[data-testid="create-password-wallet"]');
     await page.waitForSelector('[data-testid="secure-wallet-later"]');

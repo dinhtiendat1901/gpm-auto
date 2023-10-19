@@ -7,7 +7,7 @@ export default async function (eventemitter: EventEmitter<any>) {
     const backgroundPage = await backgroundPageTarget.page();
     backgroundPage.setDefaultTimeout(15000);
     await backgroundPage.waitForSelector('#password', {visible: true});
-    await backgroundPage.type('#password', 'Jav13579');
+    await backgroundPage.type('#password', process.env.METAMASK_PASSWORD);
     await backgroundPage.click('[data-testid="unlock-submit"]');
 
     await backgroundPage.waitForSelector('[data-testid="page-container-footer-next"]', {visible: true});
