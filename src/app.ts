@@ -8,6 +8,7 @@ import {currentProfileId} from "./globalVariable";
 import getUserInput from "./until/getUserInput";
 import createMetamaskJob from "./job/createMetamaskJob";
 import fixMetamaskJob from "./job/fixMetamaskJob";
+import signInSuperful from "./job/signInSuperful";
 
 interface JobIns {
     name: string,
@@ -30,6 +31,9 @@ async function main() {
                 break;
             case 3:
                 await fixMetamaskJob(job);
+                break;
+            case 4:
+                await signInSuperful(job);
                 break;
         }
     }, {
