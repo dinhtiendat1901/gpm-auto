@@ -12,7 +12,7 @@ interface Profile {
 
 export default async function getListProfileIds(from: number, to: number) {
     const listProfiles = await axios.get<any, AxiosResponse<Profile[]>, any>(process.env.GET_LIST_PROFILES_API_URL);
-    const sliceProfiles = listProfiles.data.reverse().slice(from - 1, to);
+    const sliceProfiles = listProfiles.data.slice(from - 1, to);
     const listProfileIds: string[] = [];
     sliceProfiles.forEach(value => {
         listProfileIds.push(value.id);
