@@ -1,11 +1,16 @@
 import * as readline from 'readline';
+import createMetamaskJob from "../job/createMetamaskJob";
+import signInAlphabotJob from "../job/signInAlphabotJob";
+import fixMetamaskJob from "../job/fixMetamaskJob";
+import signInSuperful from "../job/signInSuperful";
+import twDisWithSuperfulJob from "../job/twDisWithSuperfulJob";
 
 
-interface userInput {
+export interface userInput {
     runType: number,
     runFrom: number,
     runTo: number,
-    runScript: number
+    runScripts: Function[]
 }
 
 
@@ -22,6 +27,25 @@ const question = (prompt: string): Promise<string> => {
         });
     });
 };
+const getScriptFromInput = (input: string): Function[] => {
+    const scriptMap = new Map<number, Function>();
+    scriptMap.set(1, createMetamaskJob);
+    scriptMap.set(2, signInAlphabotJob);
+    scriptMap.set(3, fixMetamaskJob);
+    scriptMap.set(4, signInSuperful);
+    scriptMap.set(5, twDisWithSuperfulJob);
+
+
+    const numbersArray = input.split(' ').map(Number);
+    const filteredScript = [];
+    for (const num of numbersArray) {
+        const func = scriptMap.get(num);
+        if (func) {
+            filteredScript.push(func);
+        }
+    }
+    return filteredScript;
+}
 
 
 export default async function (): Promise<userInput> {
@@ -44,10 +68,11 @@ export default async function (): Promise<userInput> {
         '4.Link metamask với superful\n' +
         '5.Link tw discord với superful');
     const runScript = await question('Chọn:');
+    const scriptFromInput = getScriptFromInput(runScript);
     return {
         runType: parseInt(runType),
         runFrom: parseInt(from),
         runTo: parseInt(to),
-        runScript: parseInt(runScript)
+        runScripts: scriptFromInput
     }
 }

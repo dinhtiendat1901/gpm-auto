@@ -1,15 +1,9 @@
-import {Job} from "bullmq";
-import {changeCurrentBrowser, changeCurrentProfileId} from "../globalVariable";
-import startProfile from "../until/startProfile";
-import stopProfile from "../until/stopProfile";
+import {currentBrowser} from "../globalVariable";
 
-export default async function (job: Job) {
-    changeCurrentProfileId(job.data.profileId);
-    const browser = await startProfile(job.data.profileId);
-    changeCurrentBrowser(browser);
-    const proxyPage = await browser.newPage();
+export default async function () {
+    const proxyPage = await currentBrowser.newPage();
     await proxyPage.goto(process.env.SUPER_FUL_SETTINGS_URL, {waitUntil: 'networkidle0'});
-    const superFulSettingsPage = await browser.newPage();
+    const superFulSettingsPage = await currentBrowser.newPage();
     superFulSettingsPage.setDefaultTimeout(15000);
     await superFulSettingsPage.goto(process.env.SUPER_FUL_SETTINGS_URL, {waitUntil: 'networkidle0'});
     await superFulSettingsPage.waitForSelector('.px-4.w-52.bg-sky-400');
@@ -27,5 +21,4 @@ export default async function (job: Job) {
     await superFulSettingsPage.waitForSelector('.button-ejjZWC.lookFilled-1H2Jvj');
     await superFulSettingsPage.click('.button-ejjZWC.lookFilled-1H2Jvj');
     await superFulSettingsPage.waitForNavigation({waitUntil: 'networkidle0'});
-    stopProfile(job.data.profileId);
 }
