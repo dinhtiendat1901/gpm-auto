@@ -2,8 +2,9 @@ import {currentBrowser} from "../../globalVariable";
 import {EventEmitter} from "puppeteer";
 import waitMetamaskNotiFirst from "../../waitMetamaskNotiFirst";
 import waitMetamaskNotiSecond from "../../waitMetamaskNotiSecond";
+import {Job} from "bullmq";
 
-export default async function addWalletSuperfulJob() {
+export default async function addWalletSuperfulJob(job: Job) {
     const proxyPage = await currentBrowser.newPage();
     await proxyPage.goto(process.env.SUPER_FUL_URL, {waitUntil: 'networkidle0'});
     const superFulPage = await currentBrowser.newPage();
@@ -25,7 +26,7 @@ export default async function addWalletSuperfulJob() {
         await superFulPage.click('.px-8.undefined');
     });
 
-    await waitMetamaskNotiFirst(eventEmitter);
+    await waitMetamaskNotiFirst(eventEmitter, job);
     await waitMetamaskNotiSecond();
     await superFulPage.waitForNavigation({waitUntil: 'networkidle0'});
 }

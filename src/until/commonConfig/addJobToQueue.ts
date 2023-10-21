@@ -24,7 +24,8 @@ export default async function (userInput: userInput, queue: Queue) {
         listJob.push({
             name: `job-${profileId}`,
             data: {
-                profileId: profileId
+                profileId: profileId,
+                needPasswordMetamask: true
             },
             opts: {
                 removeOnFail: true,

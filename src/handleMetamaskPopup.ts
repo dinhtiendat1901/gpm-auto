@@ -1,8 +1,7 @@
 import {currentBrowser} from "./globalVariable";
-import {EventEmitter} from "puppeteer";
 import {Job} from "bullmq";
 
-export default async function (eventemitter: EventEmitter<any>, job: Job) {
+export default async function (job:Job) {
     const backgroundPageTarget = await currentBrowser.waitForTarget(
         target => target.url() === process.env.METAMASK_NOTIFICATION_URL);
     const backgroundPage = await backgroundPageTarget.page();
@@ -17,7 +16,12 @@ export default async function (eventemitter: EventEmitter<any>, job: Job) {
     await backgroundPage.click('[data-testid="page-container-footer-next"]');
     await backgroundPage.waitForSelector('.permission-approval-container__content__requested', {visible: true});
     await backgroundPage.click('[data-testid="page-container-footer-next"]');
-    backgroundPage.once('close', async () => {
-        eventemitter.emit('metamaskClosed', '*');
-    })
+
+
+    const backgroundPageTarget1 = await currentBrowser.waitForTarget(
+        target => target.url().includes(process.env.METAMASK_TRANSACTION_URL) || target.url() === process.env.METAMASK_NOTIFICATION_URL);
+
+    const lastPage = await backgroundPageTarget1.page();
+    await lastPage.waitForSelector('.request-signature__origin', {visible: true});
+    await lastPage.click('[data-testid="page-container-footer-next"]');
 }

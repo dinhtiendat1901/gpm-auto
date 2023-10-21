@@ -14,7 +14,7 @@ async function main() {
         const browser = await startProfile(job.data.profileId);
         changeCurrentBrowser(browser);
         for (const func of userInput.runScripts) {
-            await func();
+            await func(job);
         }
     }, {
         connection: redisConfig.connection
