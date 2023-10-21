@@ -47,8 +47,9 @@ export default async function addWalletSuperfulJob(job: Job) {
 
 
         await superFulPage.waitForNavigation({waitUntil: 'networkidle0'});
-    } catch (e) {
+    } catch (e:any) {
         await writeToSecondSheet(job.data.jobIndex, 'addWalletSuperfulJob');
+        console.log(e.message);
     }
 
 }

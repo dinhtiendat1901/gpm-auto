@@ -22,7 +22,8 @@ export default async function addSocialSubberJob(job: Job) {
         await subberPage.waitForSelector('button.button-ejjZWC.lookFilled-1H2Jvj.colorBrand-2M3O3N.sizeMedium-2oH5mg.grow-2T4nbg');
         await subberPage.click('button.button-ejjZWC.lookFilled-1H2Jvj.colorBrand-2M3O3N.sizeMedium-2oH5mg.grow-2T4nbg');
         await subberPage.waitForNavigation({waitUntil: 'networkidle0'});
-    } catch (e) {
+    } catch (e:any) {
         await writeToSecondSheet(job.data.jobIndex, 'addSocialSubberJob');
+        console.log(e.message);
     }
 }

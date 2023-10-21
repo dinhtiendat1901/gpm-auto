@@ -23,8 +23,9 @@ export default async function addWalletSubberJob(job: Job) {
 
         await handleMetamaskPopup(job);
         await subberPage.waitForNavigation({waitUntil: 'networkidle0'});
-    } catch (e) {
+    } catch (e:any) {
         await writeToSecondSheet(job.data.jobIndex, 'addWalletSubberJob');
+        console.log(e.message);
     }
 
 }

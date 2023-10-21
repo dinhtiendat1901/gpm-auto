@@ -14,7 +14,8 @@ export default async function createMetamaskJob(job: Job) {
         await metamaskPage.goto(process.env.METAMASK_WELCOME_URL);
         await createMetamask(metamaskPage);
         job.data.needPasswordMetamask = false;
-    } catch (e) {
+    } catch (e:any) {
         await writeToSecondSheet(job.data.jobIndex, 'createMetamaskJob');
+        console.log(e.message);
     }
 }

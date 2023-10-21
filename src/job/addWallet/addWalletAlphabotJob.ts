@@ -14,7 +14,8 @@ export default async function addWalletAlphabotJob(job: Job) {
         await alphaBotPage.click('.css-1c7g2xp');
         await handleMetamaskPopup(job);
         await alphaBotPage.waitForSelector('[data-action="header-open-profile"]', {visible: true});
-    } catch (e) {
+    } catch (e:any) {
         await writeToSecondSheet(job.data.jobIndex, 'addWalletAlphabotJob');
+        console.log(e.message);
     }
 }

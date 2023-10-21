@@ -13,7 +13,8 @@ export default async function fixMetamaskJob(job: Job) {
         const metamaskPage = await currentBrowser.newPage();
         await metamaskPage.goto(process.env.METAMASK_UNLOCK_URL);
         await unlockMetamask(metamaskPage);
-    } catch (e) {
+    } catch (e:any) {
         await writeToSecondSheet(job.data.jobIndex, 'fixMetamaskJob');
+        console.log(e.message);
     }
 }

@@ -29,7 +29,8 @@ export default async function addSocialSuperfulJob(job: Job) {
         await superFulSettingsPage.waitForSelector('.button-ejjZWC.lookFilled-1H2Jvj');
         await superFulSettingsPage.click('.button-ejjZWC.lookFilled-1H2Jvj');
         await superFulSettingsPage.waitForNavigation({waitUntil: 'networkidle0'});
-    } catch (e) {
+    } catch (e:any) {
         await writeToSecondSheet(job.data.jobIndex, 'addSocialSuperfulJob');
+        console.log(e.message);
     }
 }
