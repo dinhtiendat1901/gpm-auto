@@ -7,6 +7,7 @@ export default async function addWalletSubberJob() {
     const closeWindowButton = await subberPage.$('.dim.css-1h4ru7b');
     if (closeWindowButton) {
         await subberPage.click('.dim.css-1h4ru7b');
+        await new Promise(r => setTimeout(r, 500));
     }
     await subberPage.waitForSelector('.css-1m5tmdf', {visible: true});
     await subberPage.click('.css-1m5tmdf');
@@ -34,6 +35,6 @@ export default async function addWalletSubberJob() {
     const lastPage = await backgroundPageTarget1.page();
     await lastPage.waitForSelector('.request-signature__origin', {visible: true});
     await lastPage.click('[data-testid="page-container-footer-next"]');
-
+    await subberPage.waitForNavigation({waitUntil: 'networkidle0'});
 
 }
