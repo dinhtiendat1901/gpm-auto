@@ -1,10 +1,10 @@
 import {Worker} from 'bullmq';
-import setupRedis from "./until/setupRedis";
+import setupRedis from "./until/commonConfig/setupRedis";
 import {changeCurrentBrowser} from "./globalVariable";
-import getUserInput from "./until/getUserInput";
-import addJobToQueue from "./until/addJobToQueue";
-import startProfile from "./until/startProfile";
-import addEventWorker from "./until/addEventWorker";
+import getUserInput from "./until/commonConfig/getUserInput";
+import addJobToQueue from "./until/commonConfig/addJobToQueue";
+import startProfile from "./until/handleProfile/startProfile";
+import addEventWorker from "./until/commonConfig/addEventWorker";
 
 
 async function main() {

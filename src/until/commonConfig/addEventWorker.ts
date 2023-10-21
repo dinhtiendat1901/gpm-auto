@@ -1,5 +1,5 @@
-import {cutAndInsertRow, deleteFirstRow} from "./excelUntil";
-import stopProfile from "./stopProfile";
+import {cutAndInsertRow, deleteFirstRow} from "../excelUntil";
+import stopProfile from "../handleProfile/stopProfile";
 import {Worker} from "bullmq";
 
 export default async function (worker: Worker) {

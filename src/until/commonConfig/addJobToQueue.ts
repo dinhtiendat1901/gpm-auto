@@ -1,7 +1,7 @@
 import {userInput} from "./getUserInput";
 import {BulkJobOptions, Queue} from "bullmq";
-import {clearSecondWorksheet, readData, writeArrayToColumn} from "./excelUntil";
-import getListProfileIds from "./getListProfileIds";
+import {clearSecondWorksheet, readData, writeArrayToColumn} from "../excelUntil";
+import getListProfileIds from "../handleProfile/getListProfileIds";
 
 interface JobIns {
     name: string,

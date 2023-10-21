@@ -1,4 +1,4 @@
-import {currentBrowser} from "../globalVariable";
+import {currentBrowser} from "../../globalVariable";
 
 export default async function addSocialSubberJob() {
     const subberPage = await currentBrowser.newPage();

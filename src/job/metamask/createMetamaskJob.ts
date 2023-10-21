@@ -1,6 +1,6 @@
-import {currentBrowser} from "../globalVariable";
-import installMetamask from "../installMetamask";
-import createMetamask from "../createMetamask";
+import {currentBrowser} from "../../globalVariable";
+import installMetamask from "../../installMetamask";
+import createMetamask from "../../createMetamask";
 
 export default async function createMetamaskJob() {
     const firstPage = await currentBrowser.pages().then(allPages => allPages[0]);

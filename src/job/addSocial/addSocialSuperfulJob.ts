@@ -1,6 +1,6 @@
-import {currentBrowser} from "../globalVariable";
+import {currentBrowser} from "../../globalVariable";
 
-export default async function addSocialSuperfulJob () {
+export default async function addSocialSuperfulJob() {
     const proxyPage = await currentBrowser.newPage();
     await proxyPage.goto(process.env.SUPER_FUL_SETTINGS_URL, {waitUntil: 'networkidle0'});
     const superFulSettingsPage = await currentBrowser.newPage();

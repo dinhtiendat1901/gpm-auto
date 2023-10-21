@@ -1,11 +1,11 @@
 import * as readline from 'readline';
-import createMetamaskJob from "../job/createMetamaskJob";
-import fixMetamaskJob from "../job/fixMetamaskJob";
-import addWalletSubberJob from "../job/addWalletSubberJob";
-import addWalletAlphabotJob from "../job/addWalletAlphabotJob";
-import addWalletSuperfulJob from "../job/addWalletSuperfulJob";
-import addSocialSuperfulJob from "../job/addSocialSuperfulJob";
-import addSocialSubberJob from "../job/addSocialSubberJob";
+import createMetamaskJob from "../../job/metamask/createMetamaskJob";
+import fixMetamaskJob from "../../job/metamask/fixMetamaskJob";
+import addWalletSubberJob from "../../job/addWallet/addWalletSubberJob";
+import addWalletAlphabotJob from "../../job/addWallet/addWalletAlphabotJob";
+import addWalletSuperfulJob from "../../job/addWallet/addWalletSuperfulJob";
+import addSocialSuperfulJob from "../../job/addSocial/addSocialSuperfulJob";
+import addSocialSubberJob from "../../job/addSocial/addSocialSubberJob";
 
 
 export interface userInput {

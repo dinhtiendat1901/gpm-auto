@@ -1,7 +1,7 @@
-import startProfile from "../until/startProfile";
+import startProfile from "../../until/handleProfile/startProfile";
 import {Job} from "bullmq";
-import {changeCurrentProfileId} from "../globalVariable";
-import stopProfile from "../until/stopProfile";
+import {changeCurrentProfileId} from "../../globalVariable";
+import stopProfile from "../../until/handleProfile/stopProfile";
 
 export default async function addWalletAlphabotJob(job: Job) {
     changeCurrentProfileId(job.data.profileId);

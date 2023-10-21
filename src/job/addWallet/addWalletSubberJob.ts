@@ -1,4 +1,4 @@
-import {currentBrowser} from "../globalVariable";
+import {currentBrowser} from "../../globalVariable";
 
 export default async function addWalletSubberJob() {
     const subberPage = await currentBrowser.newPage();

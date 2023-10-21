@@ -1,7 +1,7 @@
-import {currentBrowser} from "../globalVariable";
+import {currentBrowser} from "../../globalVariable";
 import {EventEmitter} from "puppeteer";
-import waitMetamaskNotiFirst from "../waitMetamaskNotiFirst";
-import waitMetamaskNotiSecond from "../waitMetamaskNotiSecond";
+import waitMetamaskNotiFirst from "../../waitMetamaskNotiFirst";
+import waitMetamaskNotiSecond from "../../waitMetamaskNotiSecond";
 
 export default async function addWalletSuperfulJob() {
     const proxyPage = await currentBrowser.newPage();

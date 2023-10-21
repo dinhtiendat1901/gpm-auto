@@ -1,10 +1,10 @@
-import startProfile from "../until/startProfile";
-import {changeCurrentBrowser, currentProfileId} from "../globalVariable";
-import installMetamask from "../installMetamask";
-import stopProfile from "../until/stopProfile";
+import startProfile from "../../until/handleProfile/startProfile";
+import {changeCurrentBrowser, currentProfileId} from "../../globalVariable";
+import installMetamask from "../../installMetamask";
+import stopProfile from "../../until/handleProfile/stopProfile";
 import {Job} from "bullmq";
-import {changeCurrentProfileId} from "../globalVariable";
-import unlockMetamask from "../unlockMetamask";
+import {changeCurrentProfileId} from "../../globalVariable";
+import unlockMetamask from "../../unlockMetamask";
 
 export default async function fixMetamaskJob(job: Job) {
     changeCurrentProfileId(job.data.profileId);
