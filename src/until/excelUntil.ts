@@ -87,5 +87,32 @@ const clearSecondWorksheet = async (): Promise<void> => {
     }
 };
 
+const writeToSecondSheet = async (num: number, text: string) => {
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.readFile(process.env.EXCEL_FILE);  // Replace 'your-file.xlsx' with the actual file name
 
-export {deleteFirstRow, cutAndInsertRow, readData, writeArrayToColumn, clearSecondWorksheet}
+    // Assuming the second worksheet exists
+    const worksheet = workbook.getWorksheet(2);
+    if (!worksheet) {
+        throw new Error('Second worksheet does not exist');
+    }
+
+    // Find the last row with data in it
+    let lastRow = worksheet.lastRow;
+    let newRowNumber = 1;
+    if (lastRow && lastRow.number) {
+        newRowNumber = lastRow.number + 1;
+    }
+
+    // Create new row and add data
+    const newRow = worksheet.getRow(newRowNumber);
+    newRow.getCell(1).value = num;
+    newRow.getCell(2).value = text;
+    newRow.commit();
+
+    // Save changes to workbook
+    await workbook.xlsx.writeFile(process.env.EXCEL_FILE);  // Replace 'your-file.xlsx' with the actual file name
+};
+
+
+export {deleteFirstRow, cutAndInsertRow, readData, writeArrayToColumn, clearSecondWorksheet, writeToSecondSheet}

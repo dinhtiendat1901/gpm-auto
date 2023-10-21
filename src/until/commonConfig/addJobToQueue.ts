@@ -20,12 +20,13 @@ export default async function (userInput: userInput, queue: Queue) {
     await clearSecondWorksheet();
     let listJob: JobIns[] = [];
 
-    listProfileId.forEach((profileId: string) => {
+    listProfileId.forEach((profileId: string, index) => {
         listJob.push({
             name: `job-${profileId}`,
             data: {
                 profileId: profileId,
-                needPasswordMetamask: true
+                needPasswordMetamask: true,
+                jobIndex: index + userInput.runFrom
             },
             opts: {
                 removeOnFail: true,
