@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export default async function (page: Page) {
-    page.setDefaultTimeout(15000);
+    page.setDefaultTimeout(parseInt(process.env.TIME_OUT));
     const currentPageCount = (await currentBrowser.pages()).length;
     await page.goto(process.env.WEB_STORE_METAMASK_URL);
     await page.evaluate(() => {

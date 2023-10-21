@@ -7,7 +7,7 @@ export default async function addSocialSuperfulJob(job: Job) {
         const proxyPage = await currentBrowser.newPage();
         await proxyPage.goto(process.env.SUPER_FUL_SETTINGS_URL, {waitUntil: 'networkidle0'});
         const superFulSettingsPage = await currentBrowser.newPage();
-        superFulSettingsPage.setDefaultTimeout(15000);
+        superFulSettingsPage.setDefaultTimeout(parseInt(process.env.TIME_OUT));
         await superFulSettingsPage.goto(process.env.SUPER_FUL_SETTINGS_URL, {waitUntil: 'networkidle0'});
         const laterButton = await superFulSettingsPage.$('p.font-bold.text-sm.line-clamp-1.text-teal-400.transition.cursor-pointer');
         if (laterButton) {

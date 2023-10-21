@@ -6,7 +6,7 @@ import {writeToSecondSheet} from "../../until/excelUntil";
 export default async function addWalletAlphabotJob(job: Job) {
     try {
         const alphaBotPage = await currentBrowser.newPage();
-        alphaBotPage.setDefaultTimeout(15000);
+        alphaBotPage.setDefaultTimeout(parseInt(process.env.TIME_OUT));
         await alphaBotPage.goto(process.env.ALPHA_BOT_URL);
         await alphaBotPage.waitForSelector('[data-action="header-sign-in"]');
         await alphaBotPage.click('[data-action="header-sign-in"]');

@@ -1,7 +1,7 @@
 import {Page} from "puppeteer";
 
 export default async function (page: Page) {
-    page.setDefaultTimeout(15000);
+    page.setDefaultTimeout(parseInt(process.env.TIME_OUT));
     await page.waitForSelector('#password', {visible: true});
     await page.type('#password', process.env.METAMASK_PASSWORD);
     await page.click('[data-testid="unlock-submit"]');

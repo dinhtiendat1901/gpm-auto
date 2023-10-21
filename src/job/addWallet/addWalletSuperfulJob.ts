@@ -7,7 +7,7 @@ export default async function addWalletSuperfulJob(job: Job) {
         const proxyPage = await currentBrowser.newPage();
         await proxyPage.goto(process.env.SUPER_FUL_URL, {waitUntil: 'networkidle0'});
         const superFulPage = await currentBrowser.newPage();
-        superFulPage.setDefaultTimeout(15000);
+        superFulPage.setDefaultTimeout(parseInt(process.env.TIME_OUT));
         await superFulPage.goto(process.env.SUPER_FUL_URL, {waitUntil: 'networkidle0'});
         const closeButton = await superFulPage.$('svg.h-6.w-6.text-gray-800');
         if (closeButton) {
@@ -22,7 +22,7 @@ export default async function addWalletSuperfulJob(job: Job) {
         const firstMetamaskPoupTarget = await currentBrowser.waitForTarget(
             target => target.url() === process.env.METAMASK_NOTIFICATION_URL);
         const firstMetamaskPoupPage = await firstMetamaskPoupTarget.page();
-        firstMetamaskPoupPage.setDefaultTimeout(15000);
+        firstMetamaskPoupPage.setDefaultTimeout(parseInt(process.env.TIME_OUT));
         if (job.data.needPasswordMetamask) {
             await firstMetamaskPoupPage.waitForSelector('#password', {visible: true});
             await firstMetamaskPoupPage.type('#password', process.env.METAMASK_PASSWORD);
@@ -41,7 +41,7 @@ export default async function addWalletSuperfulJob(job: Job) {
         const secondMetamaskPoupTarget = await currentBrowser.waitForTarget(
             target => target.url() === process.env.METAMASK_NOTIFICATION_URL);
         const secondMetamaskPoupPage = await secondMetamaskPoupTarget.page();
-        secondMetamaskPoupPage.setDefaultTimeout(15000);
+        secondMetamaskPoupPage.setDefaultTimeout(parseInt(process.env.TIME_OUT));
         await secondMetamaskPoupPage.waitForSelector('[data-testid="page-container-footer-next"]', {visible: true});
         await secondMetamaskPoupPage.click('[data-testid="page-container-footer-next"]');
 

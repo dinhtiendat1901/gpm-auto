@@ -6,7 +6,7 @@ import {writeToSecondSheet} from "../../until/excelUntil";
 export default async function addWalletSubberJob(job: Job) {
     try {
         const subberPage = await currentBrowser.newPage();
-        subberPage.setDefaultTimeout(15000);
+        subberPage.setDefaultTimeout(parseInt(process.env.TIME_OUT));
         await subberPage.goto(process.env.SUBBER_URL, {waitUntil: 'networkidle0'});
         const closeWindowButton = await subberPage.$('.dim.css-1h4ru7b');
         if (closeWindowButton) {

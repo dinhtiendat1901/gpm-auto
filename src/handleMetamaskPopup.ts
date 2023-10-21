@@ -5,7 +5,7 @@ export default async function (job: Job) {
     const backgroundPageTarget = await currentBrowser.waitForTarget(
         target => target.url() === process.env.METAMASK_NOTIFICATION_URL);
     const backgroundPage = await backgroundPageTarget.page();
-    backgroundPage.setDefaultTimeout(15000);
+    backgroundPage.setDefaultTimeout(parseInt(process.env.TIME_OUT));
     if (job.data.needPasswordMetamask) {
         await backgroundPage.waitForSelector('#password', {visible: true});
         await backgroundPage.type('#password', process.env.METAMASK_PASSWORD);
@@ -22,7 +22,7 @@ export default async function (job: Job) {
         target => target.url().includes(process.env.METAMASK_TRANSACTION_URL) || target.url() === process.env.METAMASK_NOTIFICATION_URL);
 
     const lastPage = await backgroundPageTarget1.page();
-    lastPage.setDefaultTimeout(15000);
+    lastPage.setDefaultTimeout(parseInt(process.env.TIME_OUT));
     await lastPage.waitForSelector('.request-signature__origin', {visible: true});
     await lastPage.click('[data-testid="page-container-footer-next"]');
 }

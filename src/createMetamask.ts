@@ -1,7 +1,7 @@
 import {Page} from "puppeteer";
 
 export default async function (page: Page) {
-    page.setDefaultTimeout(15000);
+    page.setDefaultTimeout(parseInt(process.env.TIME_OUT));
     await page.waitForSelector('#onboarding__terms-checkbox', {visible: true});
     let isChecked = false;
     while (!isChecked) {

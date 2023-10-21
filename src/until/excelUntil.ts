@@ -1,4 +1,4 @@
-import ExcelJS, {CellValue} from 'exceljs';
+import ExcelJS from 'exceljs';
 import dotenv from "dotenv";
 
 dotenv.config();
