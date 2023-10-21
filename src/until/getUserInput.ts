@@ -4,6 +4,7 @@ import signInAlphabotJob from "../job/signInAlphabotJob";
 import fixMetamaskJob from "../job/fixMetamaskJob";
 import signInSuperful from "../job/signInSuperful";
 import twDisWithSuperfulJob from "../job/twDisWithSuperfulJob";
+import addWalletSubberJob from "../job/addWalletSubberJob";
 
 
 export interface userInput {
@@ -34,6 +35,7 @@ const getScriptFromInput = (input: string): Function[] => {
     scriptMap.set(3, fixMetamaskJob);
     scriptMap.set(4, signInSuperful);
     scriptMap.set(5, twDisWithSuperfulJob);
+    scriptMap.set(6, addWalletSubberJob)
 
 
     const numbersArray = input.split(' ').map(Number);
@@ -66,7 +68,8 @@ export default async function (): Promise<userInput> {
         '2.Link metamask với alphabot\n' +
         '3.Fix metamask\n' +
         '4.Link metamask với superful\n' +
-        '5.Link tw discord với superful');
+        '5.Link tw discord với superful\n' +
+        '6.Add wallet to Subber');
     const runScript = await question('Chọn:');
     const scriptFromInput = getScriptFromInput(runScript);
     return {

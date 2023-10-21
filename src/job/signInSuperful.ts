@@ -1,18 +1,12 @@
-import startProfile from "../until/startProfile";
-import {Job} from "bullmq";
-import {changeCurrentBrowser, changeCurrentProfileId} from "../globalVariable";
-import stopProfile from "../until/stopProfile";
+import {currentBrowser} from "../globalVariable";
 import {EventEmitter} from "puppeteer";
 import waitMetamaskNotiFirst from "../waitMetamaskNotiFirst";
 import waitMetamaskNotiSecond from "../waitMetamaskNotiSecond";
 
-export default async function (job: Job) {
-    changeCurrentProfileId(job.data.profileId);
-    const browser = await startProfile(job.data.profileId);
-    changeCurrentBrowser(browser);
-    const proxyPage = await browser.newPage();
+export default async function () {
+    const proxyPage = await currentBrowser.newPage();
     await proxyPage.goto(process.env.SUPER_FUL_URL, {waitUntil: 'domcontentloaded'});
-    const superFulPage = await browser.newPage();
+    const superFulPage = await currentBrowser.newPage();
     superFulPage.setDefaultTimeout(15000);
     await superFulPage.goto(process.env.SUPER_FUL_URL, {waitUntil: 'domcontentloaded'});
     await superFulPage.waitForSelector('.px-8.w-56');
@@ -29,5 +23,4 @@ export default async function (job: Job) {
     await waitMetamaskNotiFirst(eventEmitter);
     await waitMetamaskNotiSecond();
     await superFulPage.waitForNavigation({waitUntil: 'domcontentloaded'});
-    stopProfile(job.data.profileId);
 }
