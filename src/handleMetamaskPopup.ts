@@ -1,7 +1,7 @@
 import {currentBrowser} from "./globalVariable";
 import {Job} from "bullmq";
 
-export default async function (job:Job) {
+export default async function (job: Job) {
     const backgroundPageTarget = await currentBrowser.waitForTarget(
         target => target.url() === process.env.METAMASK_NOTIFICATION_URL);
     const backgroundPage = await backgroundPageTarget.page();
@@ -22,6 +22,7 @@ export default async function (job:Job) {
         target => target.url().includes(process.env.METAMASK_TRANSACTION_URL) || target.url() === process.env.METAMASK_NOTIFICATION_URL);
 
     const lastPage = await backgroundPageTarget1.page();
+    lastPage.setDefaultTimeout(15000);
     await lastPage.waitForSelector('.request-signature__origin', {visible: true});
     await lastPage.click('[data-testid="page-container-footer-next"]');
 }
