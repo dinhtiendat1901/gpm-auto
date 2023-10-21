@@ -1,10 +1,10 @@
 import * as readline from 'readline';
 import createMetamaskJob from "../job/createMetamaskJob";
-import signInAlphabotJob from "../job/signInAlphabotJob";
 import fixMetamaskJob from "../job/fixMetamaskJob";
-import signInSuperful from "../job/signInSuperful";
-import twDisWithSuperfulJob from "../job/twDisWithSuperfulJob";
 import addWalletSubberJob from "../job/addWalletSubberJob";
+import addWalletAlphabotJob from "../job/addWalletAlphabotJob";
+import addWalletSuperfulJob from "../job/addWalletSuperfulJob";
+import addSocialSuperfulJob from "../job/addSocialSuperfulJob";
 
 
 export interface userInput {
@@ -14,30 +14,31 @@ export interface userInput {
     runScripts: Function[]
 }
 
+const scriptMap = new Map<number, Function>();
+scriptMap.set(1, createMetamaskJob);
+scriptMap.set(2, fixMetamaskJob);
+scriptMap.set(3, addWalletAlphabotJob);
+scriptMap.set(4, addWalletSuperfulJob);
+scriptMap.set(5, addWalletSubberJob);
+scriptMap.set(6, addSocialSuperfulJob);
+
 
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
 
-// Wrapping rl.question in a promise to make it compatible with async/await
-const question = (prompt: string): Promise<string> => {
+
+const question = function (prompt: string): Promise<string> {
     return new Promise((resolve) => {
         rl.question(prompt, (answer: string) => {
             resolve(answer);
         });
     });
 };
+
+
 const getScriptFromInput = (input: string): Function[] => {
-    const scriptMap = new Map<number, Function>();
-    scriptMap.set(1, createMetamaskJob);
-    scriptMap.set(2, signInAlphabotJob);
-    scriptMap.set(3, fixMetamaskJob);
-    scriptMap.set(4, signInSuperful);
-    scriptMap.set(5, twDisWithSuperfulJob);
-    scriptMap.set(6, addWalletSubberJob)
-
-
     const numbersArray = input.split(' ').map(Number);
     const filteredScript = [];
     for (const num of numbersArray) {
@@ -53,24 +54,21 @@ const getScriptFromInput = (input: string): Function[] => {
 export default async function (): Promise<userInput> {
     let from = '0';
     let to = '0';
-    console.log('Lấy profileId ở đâu:\n' +
-        '1.Từ excel\n' +
-        '2.Nhập tay');
-    const runType = await question('Chọn:');
+    console.log('Get ProfileId from:\n' +
+        '1.Excel\n' +
+        '2.Manual');
+    const runType = await question('Your choice:');
     console.log('');
     if (runType === '2') {
-        from = await question('Chạy từ profile số:');
-        to = await question('Đến profile số:');
+        from = await question('From:');
+        to = await question('To:');
         console.log('');
     }
-    console.log('Chọn kịch bản:\n' +
-        '1.Tạo ví metamask\n' +
-        '2.Link metamask với alphabot\n' +
-        '3.Fix metamask\n' +
-        '4.Link metamask với superful\n' +
-        '5.Link tw discord với superful\n' +
-        '6.Add wallet to Subber');
-    const runScript = await question('Chọn:');
+    console.log('Select Script:');
+    for (const [key, func] of scriptMap) {
+        console.log(`${key}: ${formatString(func.name)}`);
+    }
+    const runScript = await question('Your choice:');
     const scriptFromInput = getScriptFromInput(runScript);
     return {
         runType: parseInt(runType),
@@ -78,4 +76,31 @@ export default async function (): Promise<userInput> {
         runTo: parseInt(to),
         runScripts: scriptFromInput
     }
+}
+
+function convertCamelToSpaces(str: string): string {
+    return str.replace(/([A-Z])/g, ' $1').trim();
+}
+
+function capitalizeFirstLetter(str: string): string {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function formatString(str: string): string {
+    // Convert camelCase to space-separated string
+    const spacedString = convertCamelToSpaces(str);
+
+    // Split the string into an array of words
+    const words = spacedString.split(' ');
+
+    // Capitalize the first letter of the first word
+    words[0] = capitalizeFirstLetter(words[0]);
+
+    // Uppercase the word preceding the last word
+    if (words.length > 1) {
+        words[words.length - 2] = words[words.length - 2].toUpperCase();
+    }
+
+    // Join the array back into a string
+    return words.join(' ');
 }

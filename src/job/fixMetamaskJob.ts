@@ -6,7 +6,7 @@ import {Job} from "bullmq";
 import {changeCurrentProfileId} from "../globalVariable";
 import unlockMetamask from "../unlockMetamask";
 
-export default async function (job: Job) {
+export default async function fixMetamaskJob(job: Job) {
     changeCurrentProfileId(job.data.profileId);
     const browser = await startProfile(currentProfileId);
     changeCurrentBrowser(browser);

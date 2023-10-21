@@ -3,7 +3,7 @@ import {Job} from "bullmq";
 import {changeCurrentProfileId} from "../globalVariable";
 import stopProfile from "../until/stopProfile";
 
-export default async function (job: Job) {
+export default async function addWalletAlphabotJob(job: Job) {
     changeCurrentProfileId(job.data.profileId);
     const browser = await startProfile(job.data.profileId);
     const alphaBotPage = await browser.newPage();

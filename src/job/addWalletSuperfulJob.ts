@@ -3,7 +3,7 @@ import {EventEmitter} from "puppeteer";
 import waitMetamaskNotiFirst from "../waitMetamaskNotiFirst";
 import waitMetamaskNotiSecond from "../waitMetamaskNotiSecond";
 
-export default async function () {
+export default async function addWalletSuperfulJob() {
     const proxyPage = await currentBrowser.newPage();
     await proxyPage.goto(process.env.SUPER_FUL_URL, {waitUntil: 'domcontentloaded'});
     const superFulPage = await currentBrowser.newPage();

@@ -1,6 +1,6 @@
 import {currentBrowser} from "../globalVariable";
 
-export default async function () {
+export default async function addWalletSubberJob() {
     const subberPage = await currentBrowser.newPage();
     subberPage.setDefaultTimeout(15000);
     await subberPage.goto(process.env.SUBBER_URL, {waitUntil: 'networkidle0'});
