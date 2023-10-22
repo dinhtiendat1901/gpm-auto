@@ -13,9 +13,21 @@ async function main() {
     const worker = new Worker(redisConfig.queueName, async (job) => {
         const browser = await startProfile(job.data.profileId);
         changeCurrentBrowser(browser);
-        for (const func of userInput.runScripts) {
-            await func(job);
-        }
+        const jobPromise = new Promise(async (resolve) => {
+            for (const func of userInput.runScripts) {
+                await func(job);
+            }
+            resolve("");
+        });
+
+        // Create a timeout Promise
+        const timeoutPromise = new Promise((_, reject) => {
+            setTimeout(() => {
+                reject(new Error('Job timed out'));
+            }, parseInt(process.env.TIME_OUT_JOB));
+        });
+
+        await Promise.race([jobPromise, timeoutPromise]);
     }, {
         connection: redisConfig.connection
     });
