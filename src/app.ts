@@ -23,7 +23,8 @@ async function main() {
         // Create a timeout Promise
         const timeoutPromise = new Promise((_, reject) => {
             setTimeout(() => {
-                reject(new Error('Job timed out'));
+                job.data.jobTimeout = true;
+                reject(new Error('Job timeout'));
             }, parseInt(process.env.TIME_OUT_JOB));
         });
 

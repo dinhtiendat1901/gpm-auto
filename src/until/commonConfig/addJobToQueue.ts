@@ -26,7 +26,8 @@ export default async function (userInput: userInput, queue: Queue) {
             data: {
                 profileId: profileId,
                 needPasswordMetamask: true,
-                jobIndex: index + userInput.runFrom
+                jobIndex: index + userInput.runFrom,
+                jobTimeout: false
             },
             opts: {
                 removeOnFail: true,

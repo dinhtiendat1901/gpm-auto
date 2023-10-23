@@ -6,6 +6,7 @@ import {writeToSecondSheet} from "../../until/excelUntil";
 
 export default async function createMetamaskJob(job: Job) {
     try {
+        if (job.data.jobTimeout) throw new Error('Job timeout');
         const firstPage = await currentBrowser.pages().then(allPages => allPages[0]);
         await installMetamask(firstPage);
         await currentBrowser.waitForTarget(
@@ -14,8 +15,9 @@ export default async function createMetamaskJob(job: Job) {
         await metamaskPage.goto(process.env.METAMASK_WELCOME_URL);
         await createMetamask(metamaskPage);
         job.data.needPasswordMetamask = false;
-    } catch (e:any) {
+    } catch (e: any) {
         await writeToSecondSheet(job.data.jobIndex, 'createMetamaskJob');
-        console.log(e.message);
+        console.log(`Job ${job.data.jobIndex} failed in createMetamaskJob...`);
+        console.log(`Error: ${e.message}`);
     }
 }

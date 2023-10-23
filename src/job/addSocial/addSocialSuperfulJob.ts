@@ -4,6 +4,7 @@ import {writeToSecondSheet} from "../../until/excelUntil";
 
 export default async function addSocialSuperfulJob(job: Job) {
     try {
+        if (job.data.jobTimeout) throw new Error('Job timeout');
         const proxyPage = await currentBrowser.newPage();
         await proxyPage.goto(process.env.SUPER_FUL_SETTINGS_URL, {waitUntil: 'networkidle0'});
         const superFulSettingsPage = await currentBrowser.newPage();
@@ -29,8 +30,9 @@ export default async function addSocialSuperfulJob(job: Job) {
         await superFulSettingsPage.waitForSelector('.button-ejjZWC.lookFilled-1H2Jvj');
         await superFulSettingsPage.click('.button-ejjZWC.lookFilled-1H2Jvj');
         await superFulSettingsPage.waitForNavigation({waitUntil: 'networkidle0'});
-    } catch (e:any) {
+    } catch (e: any) {
         await writeToSecondSheet(job.data.jobIndex, 'addSocialSuperfulJob');
-        console.log(e.message);
+        console.log(`Job ${job.data.jobIndex} failed in addSocialSuperfulJob...`);
+        console.log(`Error: ${e.message}`);
     }
 }

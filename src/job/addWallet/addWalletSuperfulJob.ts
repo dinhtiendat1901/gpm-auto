@@ -4,6 +4,7 @@ import {writeToSecondSheet} from "../../until/excelUntil";
 
 export default async function addWalletSuperfulJob(job: Job) {
     try {
+        if (job.data.jobTimeout) throw new Error('Job timeout');
         const proxyPage = await currentBrowser.newPage();
         await proxyPage.goto(process.env.SUPER_FUL_URL, {waitUntil: 'networkidle0'});
         const superFulPage = await currentBrowser.newPage();
@@ -47,9 +48,10 @@ export default async function addWalletSuperfulJob(job: Job) {
 
 
         await superFulPage.waitForNavigation({waitUntil: 'networkidle0'});
-    } catch (e:any) {
+    } catch (e: any) {
         await writeToSecondSheet(job.data.jobIndex, 'addWalletSuperfulJob');
-        console.log(e.message);
+        console.log(`Job ${job.data.jobIndex} failed in addWalletSuperfulJob...`);
+        console.log(`Error: ${e.message}`);
     }
 
 }
