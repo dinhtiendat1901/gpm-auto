@@ -62,7 +62,7 @@ const clearSecondWorksheet = async (): Promise<void> => {
     }
 };
 
-const writeToSecondSheet = async (num: number, text: string) => {
+const writeToSecondSheet = async (num: number, text: string, error: string) => {
     const workbook = new ExcelJS.Workbook();
     await workbook.xlsx.readFile(process.env.EXCEL_FILE);  // Replace 'your-file.xlsx' with the actual file name
 
@@ -83,6 +83,7 @@ const writeToSecondSheet = async (num: number, text: string) => {
     const newRow = worksheet.getRow(newRowNumber);
     newRow.getCell(1).value = num;
     newRow.getCell(2).value = text;
+    newRow.getCell(3).value = error;
     newRow.commit();
 
     // Save changes to workbook

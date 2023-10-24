@@ -31,7 +31,7 @@ export default async function addSocialSuperfulJob(job: Job) {
         await superFulSettingsPage.click('.button-ejjZWC.lookFilled-1H2Jvj');
         await superFulSettingsPage.waitForNavigation({waitUntil: 'networkidle0'});
     } catch (e: any) {
-        await writeToSecondSheet(job.data.jobIndex, 'addSocialSuperfulJob');
+        await writeToSecondSheet(job.data.jobIndex, 'addSocialSuperfulJob', e.message);
         console.log(`Job ${job.data.jobIndex} failed in addSocialSuperfulJob...`);
         console.log(`Error: ${e.message}`);
     }

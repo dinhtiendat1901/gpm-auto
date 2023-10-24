@@ -16,7 +16,7 @@ export default async function createMetamaskJob(job: Job) {
         await createMetamask(metamaskPage);
         job.data.needPasswordMetamask = false;
     } catch (e: any) {
-        await writeToSecondSheet(job.data.jobIndex, 'createMetamaskJob');
+        await writeToSecondSheet(job.data.jobIndex, 'createMetamaskJob', e.message);
         console.log(`Job ${job.data.jobIndex} failed in createMetamaskJob...`);
         console.log(`Error: ${e.message}`);
     }

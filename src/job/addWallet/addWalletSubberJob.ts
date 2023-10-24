@@ -22,10 +22,10 @@ export default async function addWalletSubberJob(job: Job) {
         await subberPage.click('[data-testid="rk-wallet-option-metaMask"]');
 
 
-        await handleMetamaskPopup(job);
+        await handleMetamaskPopup(job, null, null);
         await subberPage.waitForNavigation({waitUntil: 'networkidle0'});
     } catch (e: any) {
-        await writeToSecondSheet(job.data.jobIndex, 'addWalletSubberJob');
+        await writeToSecondSheet(job.data.jobIndex, 'addWalletSubberJob', e.message);
         console.log(`Job ${job.data.jobIndex} failed in addWalletSubberJob...`);
         console.log(`Error: ${e.message}`);
     }
