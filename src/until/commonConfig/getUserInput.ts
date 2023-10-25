@@ -6,7 +6,8 @@ import addWalletAlphabotJob from "../../job/addWallet/addWalletAlphabotJob";
 import addWalletSuperfulJob from "../../job/addWallet/addWalletSuperfulJob";
 import addSocialSuperfulJob from "../../job/addSocial/addSocialSuperfulJob";
 import addSocialSubberJob from "../../job/addSocial/addSocialSubberJob";
-import vendettaJob from "../../job/project/vendettaJob";
+import acceptInviteDiscordJob from "../../job/discord/acceptInviteDiscordJob";
+import regSuperfulJob from "../../job/superful/regSuperfulJob";
 
 
 export interface userInput {
@@ -24,7 +25,8 @@ scriptMap.set(4, addWalletSuperfulJob);
 scriptMap.set(5, addWalletSubberJob);
 scriptMap.set(6, addSocialSuperfulJob);
 scriptMap.set(7, addSocialSubberJob);
-scriptMap.set(8, vendettaJob);
+scriptMap.set(8, acceptInviteDiscordJob);
+scriptMap.set(9, regSuperfulJob);
 
 
 const rl = readline.createInterface({
